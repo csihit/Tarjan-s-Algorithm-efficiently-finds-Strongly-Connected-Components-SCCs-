@@ -1,0 +1,60 @@
+Input:
+    Read V (number of vertices)
+    Read E (number of edges)
+
+Create graph with V vertices
+
+Repeat E times
+    Read u, v
+    addEdge(u, v)
+End Repeat
+
+Call findSCCs()
+
+Procedure addEdge(u, v)
+    Add v to graph[u]
+
+Procedure findSCCs()
+    Initialize timer ← 0
+    For each vertex i from 0 to V−1
+        disc[i] ← -1
+        low[i] ← -1
+        inStack[i] ← false
+    End For
+    Create empty stack st
+    For each vertex i from 0 to V−1
+        If disc[i] = -1
+            tarjanDFS(i)
+        End If
+    End For
+
+Procedure tarjanDFS(u)
+    disc[u] ← timer
+    low[u] ← timer
+    timer ← timer + 1
+    Push u into stack st
+    inStack[u] ← true
+    For each adjacent vertex v of u
+        If disc[v] = -1 Then
+            tarjanDFS(v)
+            low[u] ← min(low[u], low[v])
+        Else If inStack[v] = true Then
+            low[u] ← min(low[u], disc[v])
+        End If
+    End For
+    If disc[u] = low[u] Then
+        Create empty list scc
+        Repeat
+            node ← Top(st)
+            Pop(st)
+            inStack[node] ← false
+            Add node to scc
+        Until node = u
+        Sort scc
+        Print "SCC: "
+        For each node in scc
+            Print node
+        End For
+    End If
+    
+Stop
